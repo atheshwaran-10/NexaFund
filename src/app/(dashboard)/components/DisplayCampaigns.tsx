@@ -1,11 +1,13 @@
-import React from 'react';
+"use client";
+import React from "react";
 //@ts-ignore
 import { v4 as uuidv4 } from "uuid";
-import FundCard from './FundCard';
-import { loader } from '~/public/assets';
+import FundCard from "./FundCard";
+import { loader } from "~/public/assets";
 import type { Campaign } from "@/context";
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import useStore from "@/store/searchStore";
 
 const DisplayCampaigns = ({
   title,
@@ -17,8 +19,14 @@ const DisplayCampaigns = ({
   campaigns: Campaign[] | null;
 }) => {
   const router = useRouter();
+  const { value } = useStore();
 
-  console.log(campaigns)
+  const filteredCampaigns = campaigns
+    ? campaigns.filter((campaign) =>
+        campaign.title.toLowerCase().startsWith(value.toLowerCase()),
+      )
+    : null;
+
   const handleNavigate = (campaign: Campaign) => {
     router.push(`/home/${campaign.pId}`);
   };
@@ -31,21 +39,23 @@ const DisplayCampaigns = ({
 
       <div className="mt-[20px] flex flex-wrap gap-[26px]">
         {isLoading && (
-          <Image
-            src={loader}
-            alt="loader"
-            className="h-[100px] w-[100px] object-contain"
-          />
+          <div className="flex h-full w-full items-center justify-center">
+            <Image
+              src={loader}
+              alt="loader"
+              className="h-[100px] w-[100px] object-contain"
+            />
+          </div>
         )}
-        {!isLoading && campaigns?.length === 0 && (
+        {!isLoading && filteredCampaigns?.length === 0 && (
           <p className="font-epilogue text-[14px] font-semibold leading-[30px] text-[#818183]">
-            You have not created any campigns yet
+            No Campaigns Found
           </p>
         )}
         {!isLoading &&
-          campaigns &&
-          campaigns?.length > 0 &&
-          campaigns.map((campaign) => (
+          filteredCampaigns &&
+          filteredCampaigns?.length > 0 &&
+          filteredCampaigns.map((campaign) => (
             <FundCard
               key={uuidv4()}
               {...campaign}
@@ -57,4 +67,4 @@ const DisplayCampaigns = ({
   );
 };
 
-export default DisplayCampaigns
+export default DisplayCampaigns;

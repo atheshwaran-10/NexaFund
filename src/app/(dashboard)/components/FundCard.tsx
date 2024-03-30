@@ -1,7 +1,7 @@
 import React from "react";
 
 import { tagType, thirdweb } from "~/public/assets";
-import { daysLeft } from "@/utils";
+import { daysLeft, getDaysRemaining } from "@/utils";
 import Image from "next/image";
 
 const FundCard = ({
@@ -23,7 +23,7 @@ const FundCard = ({
   image: string;
   handleClick: () => void;
 }) => {
-  const remainingDays = daysLeft(deadline);
+  const remainingDays = getDaysRemaining(deadline);
 
   return (
     <div

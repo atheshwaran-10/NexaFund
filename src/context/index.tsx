@@ -20,6 +20,7 @@ export type ContextType = {
   donate: (pId: number, amount: string) => Promise<void | null>;
   getDonations: (pId: number) => Promise<Donation[] | null>;
   getCampaignById: (pId: number) => Promise<Campaign | null>;
+  getDonationsByUser: () => Promise<Campaign[] | null>;
 };
 
 export type Campaign = {
@@ -31,6 +32,8 @@ export type Campaign = {
   amountCollected: string;
   image: string;
   pId: number;
+  donators?: string[];
+  donations?: string[];
 };
 
 export type Donation = {
@@ -52,7 +55,7 @@ export const StateContextProvider = ({
   children: React.ReactNode;
 }) => {
   const { contract } = useContract(
-    "0x37e73d1C7ac51Ab32c2070a89aF490b0454f3a17",
+    "0x15405736F8a76793a8275902b07a11114b9CE641",
   );
 
   const { mutateAsync: createCampaign } = useContractWrite(
@@ -69,6 +72,7 @@ export const StateContextProvider = ({
 
   const publishCampaign = async (form: CampaignForm) => {
     const deadlineTimestamp = new Date(form.deadline).getTime() / 1000;
+
     try {
       const data = await createCampaign({
         args: [
@@ -129,14 +133,32 @@ export const StateContextProvider = ({
     }
   };
 
-   const getCampaignById = async (pId: number): Promise<Campaign | null> => {
-     if (contract) {
-       const campaign = await contract.call("campaigns", [pId]);
-       return campaign
-     } else {
-       return null;
-     }
-   };
+  const getCampaignById = async (pId: number): Promise<Campaign | null> => {
+    if (contract) {
+      const campaign = await contract.call("campaigns", [pId]);
+
+      if (!campaign) {
+        return null;
+      }
+
+      const parsedCampaign: Campaign = {
+        owner: campaign.owner,
+        title: campaign.title,
+        description: campaign.description,
+        target: ethers.utils.formatEther(campaign.target.toString()),
+        deadline: campaign.deadline.toNumber(),
+        amountCollected: ethers.utils.formatEther(
+          campaign.amountCollected.toString(),
+        ),
+        image: campaign.image,
+        pId: pId,
+      };
+
+      return parsedCampaign;
+    } else {
+      return null;
+    }
+  };
 
   const getDonations = async (pId: number): Promise<Donation[] | null> => {
     if (contract) {
@@ -148,6 +170,51 @@ export const StateContextProvider = ({
         }),
       );
       return parsedDonations;
+    } else {
+      return null;
+    }
+  };
+
+  const getUserDonationsFromCampaigns = (
+    campaigns: Campaign[],
+    userAddress: string,
+  ): Campaign[]|null => {
+    //@ts-ignore
+    return campaigns.map((campaign) => {
+      const userDonations: string[] = [];
+      if (campaign.donators && campaign.donations)
+      {
+        campaign.donators.forEach((donator, index) => {
+          if (donator.toLowerCase() === userAddress.toLowerCase()) {
+            //@ts-ignore
+            userDonations.push(campaign.donations[index]);
+          }
+        });
+
+        return {
+          ...campaign,
+          donations: userDonations,
+        };
+      }
+      else{
+        return null;
+      }
+    });
+  };
+
+  const getDonationsByUser = async (): Promise<Campaign[] | null> => {
+    if (contract) {
+      const allCampaigns = await getCampaigns();
+      if (allCampaigns && address) {
+        const userDonations = getUserDonationsFromCampaigns(
+          allCampaigns,
+          address,
+        );
+        console.log(userDonations,1)
+        return userDonations;
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
@@ -165,6 +232,7 @@ export const StateContextProvider = ({
         donate,
         getCampaignById,
         getDonations,
+        getDonationsByUser,
       }}
     >
       {children}

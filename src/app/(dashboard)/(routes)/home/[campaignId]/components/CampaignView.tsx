@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Donation, useStateContext, Campaign } from "@/context";
 import { CountBox, CustomButton, Loader } from "@/app/(dashboard)/components";
-import { calculateBarPercentage, daysLeft } from "@/utils";
+import { calculateBarPercentage, daysLeft, getDaysRemaining } from "@/utils";
 import { thirdweb } from "~/public/assets";
 import Image from "next/image";
 import toast from "react-hot-toast";
@@ -16,17 +16,34 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
   campaign,
   donators,
 }) => {
-  const { donate } = useStateContext();
+  const { donate, address } = useStateContext();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [amount, setAmount] = useState<string>("0");
-  console.log("INCO");
-  console.log(campaign);
-  console.log(donators);
+  const [eligible, setEligible] = useState(true);
+
+  useEffect(() => {
+    if (donators) {
+      donators?.map((donator) => {
+        if (donator.donator === address) {
+          console.log("Already Donated");
+          setEligible(false);
+        }
+      });
+    }
+  }, [setEligible, donators]);
 
   const handleDonate = async () => {
     try {
+      if (!address) {
+        toast.error("Connect Your Wallet");
+        return;
+      }
+      if (!eligible) {
+        toast.error("You have Already Donated to this campaign");
+        return;
+      }
       setIsLoading(true);
       await donate(campaign?.pId || 0, amount);
       setIsLoading(false);
@@ -41,7 +58,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
     return <Loader />;
   }
 
-  const remainingDays = daysLeft(Number(campaign?.deadline?.toString() || 0));
+  const remainingDays = getDaysRemaining(campaign?.deadline).toString();
 
   return (
     <div>
@@ -84,7 +101,6 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
             <h4 className="font-epilogue text-[18px] font-semibold uppercase text-white">
               Creator
             </h4>
-
             <div className="mt-[20px] flex flex-row flex-wrap items-center gap-[14px]">
               <div className="flex h-[52px] w-[52px] cursor-pointer items-center justify-center rounded-full bg-[#2c2f32]">
                 <Image

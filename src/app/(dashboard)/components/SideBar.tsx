@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
-
-import { logo, sun } from "~/public/assets";
+import { logo } from "~/public/assets";
 import { navlinks } from "@/constants";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 const Icon = ({
@@ -40,7 +40,7 @@ const Icon = ({
 
 const Sidebar = () => {
   const router = useRouter();
-  const [isActive, setIsActive] = useState("home");
+  const isActive = usePathname().substring(1);
 
   return (
     <div className="sticky top-5 flex h-[93vh] flex-col items-center justify-between">
@@ -62,11 +62,7 @@ const Sidebar = () => {
               styles="cursor-pointer"
               isActive={isActive}
               handleClick={() => {
-                if (!link.disabled) 
-                {
-                  setIsActive(link.name);
-                  router.push(`${link.link}`);
-                }
+                router.push(`${link.link}`);
               }}
             />
           ))}

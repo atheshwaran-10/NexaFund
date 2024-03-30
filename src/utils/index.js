@@ -1,3 +1,4 @@
+//@ts-nocheck
 export const daysLeft = (deadline) => {
   const difference = new Date(deadline).getTime() - Date.now();
   const remainingDays = difference / (1000 * 3600 * 24);
@@ -19,4 +20,18 @@ export const checkIfImage = (url, callback) => {
 
   img.onload = () => callback(true);
   img.onerror = () => callback(false);
+};
+
+export const getDaysRemaining = (timestamp) => {
+  const currentDate = new Date();
+
+  const milliseconds = timestamp * 1000;
+
+  const targetDate = new Date(milliseconds);
+
+  const difference = targetDate.getTime() - currentDate.getTime();
+
+  const daysRemaining = Math.ceil(difference / (1000 * 60 * 60 * 24));
+
+  return daysRemaining;
 };

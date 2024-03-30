@@ -7,23 +7,32 @@ import { navlinks } from "@/constants";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import useStore from "@/store/searchStore";
 
 const Navbar = () => {
   const router = useRouter();
   const [isActive, setIsActive] = useState("dashboard");
   const [toggleDrawer, setToggleDrawer] = useState(false);
   const { connect, address } = useStateContext();
+  const { value, setValue } = useStore();
+
+  const handleChange = (event: { target: { value: string; }; }) => {
+    setValue(event.target.value);
+  };
+  console.log(value)
 
   return (
     <div className="mb-[35px] flex flex-col-reverse justify-between gap-6 md:flex-row">
       <div className="flex h-[52px] max-w-[458px] flex-row rounded-[100px] bg-[#1c1c24] py-2 pl-4 pr-2 lg:flex-1">
         <input
           type="text"
+          value={value}
+          onChange={handleChange}
           placeholder="Search for campaigns"
           className="font-epilogue flex w-full bg-transparent text-[14px] font-normal text-white outline-none placeholder:text-[#4b5264]"
         />
 
-        <div className="flex h-full w-[72px] cursor-pointer items-center justify-center rounded-[20px] bg-[#4acd8d]">
+        <div className="flex h-full w-[72px] cursor-pointer items-center justify-center rounded-[20px] bg-[#4acd8d]" onClick={()=>router.push("/home")}>
           <Image
             src={search}
             alt="search"

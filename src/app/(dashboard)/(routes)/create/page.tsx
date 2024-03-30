@@ -8,6 +8,7 @@ import { money } from "~/public/assets";
 import { CustomButton, FormField, Loader } from "@/app/(dashboard)/components";
 import { checkIfImage } from "@/utils";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 interface FormState {
   name: string;
@@ -21,7 +22,7 @@ interface FormState {
 const CreateCampaign: React.FC = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { createCampaign } = useStateContext();
+  const { createCampaign,address } = useStateContext();
   const [form, setForm] = useState<FormState>({
     name: "",
     title: "",
@@ -40,6 +41,11 @@ const CreateCampaign: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if(!address)
+    {
+      toast.error ("Connect Your Wallet");
+      return;
+    }
 
 
     checkIfImage(form.image, async (exists:boolean) => {
