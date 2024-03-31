@@ -18,6 +18,8 @@ const Home = () => {
     setIsLoading(false);
   };
 
+  console.log(address);
+
   useEffect(() => {
     if (contract) fetchCampaigns();
   }, [address, contract]);

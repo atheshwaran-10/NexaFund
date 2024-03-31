@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client";
 import React, { useContext, createContext } from "react";
 import {
@@ -210,8 +211,12 @@ export const StateContextProvider = ({
           allCampaigns,
           address,
         );
+
         console.log(userDonations,1)
-        return userDonations;
+        if(userDonations)
+          return userDonations;
+        else
+            return null;
       } else {
         return null;
       }
@@ -225,6 +230,7 @@ export const StateContextProvider = ({
       value={{
         address,
         contract,
+        //@ts-ignore
         connect,
         createCampaign: publishCampaign,
         getCampaigns,
@@ -249,3 +255,6 @@ export const useStateContext = (): ContextType => {
   }
   return context;
 };
+
+
+

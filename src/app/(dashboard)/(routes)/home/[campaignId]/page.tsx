@@ -13,7 +13,7 @@ interface campaignProps {
   };
 }
 
-const campaign: React.FC<campaignProps> = ({ params }) => {
+const Campaign: React.FC<campaignProps> = ({ params }) => {
   const { getDonations, contract, address, getCampaignById } =
     useStateContext();
 
@@ -62,4 +62,4 @@ const campaign: React.FC<campaignProps> = ({ params }) => {
   );
 };
 
-export default campaign;
+export default Campaign;
