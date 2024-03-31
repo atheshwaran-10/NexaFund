@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react"
 
-import { useStateContext, Donation,Campaign } from "@/context";
+import type{Campaign} from "@/context"
+import { useStateContext, Donation } from "@/context";
 import { Loader } from "@/app/(dashboard)/components";
 import CampaignDetails from "./components/CampaignView";
 
