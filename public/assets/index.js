@@ -3,6 +3,7 @@ import dashboard from './dashboard.svg';
 import logo from './logo.svg';
 import logout from './logout.svg';
 import payment from './payment.svg';
+import placeholder from "./placeholder.png"
 import profile from './profile.svg';
 import sun from './sun.svg';
 import withdraw from './withdraw.svg';
@@ -22,6 +23,7 @@ export {
   payment,
   profile,
   sun,
+  placeholder,
   withdraw,
   search,
   menu,

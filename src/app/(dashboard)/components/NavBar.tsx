@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useStateContext } from "@/context";
 import CustomButton from "./CustomButton";
-import { logo, menu, search, thirdweb } from "~/public/assets";
+import { logo, menu, search, thirdweb,placeholder } from "~/public/assets";
 import { navlinks } from "@/constants";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -19,7 +19,6 @@ const Navbar = () => {
   const handleChange = (event: { target: { value: string; }; }) => {
     setValue(event.target.value);
   };
-  console.log(value)
 
   return (
     <div className="mb-[35px] flex flex-col-reverse justify-between gap-6 md:flex-row">
@@ -32,7 +31,10 @@ const Navbar = () => {
           className="font-epilogue flex w-full bg-transparent text-[14px] font-normal text-white outline-none placeholder:text-[#4b5264]"
         />
 
-        <div className="flex h-full w-[72px] cursor-pointer items-center justify-center rounded-[20px] bg-[#4acd8d]" onClick={()=>router.push("/home")}>
+        <div
+          className="flex h-full w-[72px] cursor-pointer items-center justify-center rounded-[20px] bg-[#4acd8d]"
+          onClick={() => router.push("/home")}
+        >
           <Image
             src={search}
             alt="search"
@@ -55,11 +57,11 @@ const Navbar = () => {
         <Link href="/profile">
           <div className="flex h-[52px] w-[52px] cursor-pointer items-center justify-center rounded-full bg-[#2c2f32]">
             <Image
-              height={12}
-              width={12}
-              src={thirdweb}
+              src={placeholder}
+              width={52}
+              height={52}
               alt="user"
-              className="h-[60%] w-[60%] object-contain"
+              className=""
             />
           </div>
         </Link>
@@ -118,7 +120,7 @@ const Navbar = () => {
               title={address ? "Create a campaign" : "Connect"}
               styles={address ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
               handleClick={() => {
-                if (address) router.push("create");
+                if (address) router.push("/create");
                 else connect();
               }}
             />

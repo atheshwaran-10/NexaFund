@@ -7,7 +7,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="sm:-8 relative flex min-h-screen flex-row bg-[#13131a] p-4">
+    <div className="sm:-8 relative flex min-h-screen flex-row bg-[#13131a] p-4 " >
       <div className="relative mr-10 hidden sm:flex">
         <SideBar />
       </div>

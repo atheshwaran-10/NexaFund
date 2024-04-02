@@ -1,30 +1,15 @@
-"use client";
-import React, { useState, useEffect } from "react";
+import React from 'react'
+import TransactionList from './components/Table'
+import { env } from '@/env'
 
-import { DisplayCampaigns } from "@/app/(dashboard)/components";
-import { useStateContext, Campaign } from "@/context";
 
-const Transactions = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [campaigns, setCampaigns] = useState<Campaign[] | null>([]);
+const page = () => {
 
-  const { address, contract, getUserCampaigns, getDonationsByUser } =
-    useStateContext();
+  return (
+    <div>
+      <TransactionList etherKey={env.ETHERSCAN_API_KEY}/>
+    </div>
+  )
+}
 
-  const fetchCampaigns = async () => {
-    console.log("fetchingg");
-    setIsLoading(true);
-    const data = await getDonationsByUser();
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    if (contract) fetchCampaigns();
-  }, [address, contract]);
-
-  console.log(campaigns);
-
-  return <h2>Hello</h2>;
-};
-
-export default Transactions;
+export default page

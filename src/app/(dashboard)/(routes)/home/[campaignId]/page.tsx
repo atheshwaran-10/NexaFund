@@ -46,7 +46,6 @@ const Campaign: React.FC<campaignProps> = ({ params }) => {
     }
   }, [contract, address]);
 
-  console.log(state);
 
   if (isLoading) {
     return <Loader />;

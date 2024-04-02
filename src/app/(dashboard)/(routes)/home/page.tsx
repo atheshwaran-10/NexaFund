@@ -11,14 +11,12 @@ const Home = () => {
   const { address, contract, getCampaigns } = useStateContext();
 
   const fetchCampaigns = async () => {
-    console.log("fetchingg");
     setIsLoading(true);
     const data = await getCampaigns();
     setCampaigns(data);
     setIsLoading(false);
   };
 
-  console.log(address);
 
   useEffect(() => {
     if (contract) fetchCampaigns();

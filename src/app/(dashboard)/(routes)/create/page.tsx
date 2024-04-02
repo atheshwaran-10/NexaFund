@@ -1,14 +1,18 @@
-"use client"
+"use client";
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { ethers } from "ethers";
 import { useRouter } from "next/navigation";
+import pic1 from "~/public/3386851.jpg";
 
+import pic2 from "~/public/5172658.jpg";
+import pic3 from "~/public/5172660.jpg";
 import { useStateContext } from "@/context";
 import { money } from "~/public/assets";
 import { CustomButton, FormField, Loader } from "@/app/(dashboard)/components";
 import { checkIfImage } from "@/utils";
 import Image from "next/image";
 import toast from "react-hot-toast";
+import { cn } from "@/utils/cn";
 
 interface FormState {
   name: string;
@@ -16,20 +20,19 @@ interface FormState {
   description: string;
   target: string;
   deadline: string;
-  image: string;
 }
 
 const CreateCampaign: React.FC = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { createCampaign,address } = useStateContext();
+  const [image, setImage] = useState("/3386851.jpg");
+  const { createCampaign, address } = useStateContext();
   const [form, setForm] = useState<FormState>({
     name: "",
     title: "",
     description: "",
     target: "",
     deadline: "",
-    image: "",
   });
 
   const handleFormFieldChange = (
@@ -41,17 +44,16 @@ const CreateCampaign: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if(!address)
-    {
-      toast.error ("Connect Your Wallet");
+    if (!address) {
+      toast.error("Connect Your Wallet");
       return;
     }
 
-
-    checkIfImage(form.image, async (exists:boolean) => {
+    checkIfImage(image, async (exists: boolean) => {
       if (exists) {
         setIsLoading(true);
         await createCampaign({
+          image,
           ...form,
           //@ts-ignore
           target: ethers.utils.parseUnits(form.target, 18),
@@ -60,7 +62,7 @@ const CreateCampaign: React.FC = () => {
         router.push("/home");
       } else {
         alert("Provide valid image URL");
-        setForm({ ...form, image: "" });
+        setForm({ ...form });
       }
     });
   };
@@ -131,20 +133,57 @@ const CreateCampaign: React.FC = () => {
           />
         </div>
 
-        <FormField
+        <div className="flex w-full flex-row justify-around gap-x-4">
+          <Image
+            src={pic1}
+            height={350}
+            width={350}
+            alt="money"
+            className={cn(
+              "cursor-pointer rounded-md object-cover",
+              image === "/3386851.jpg" ? "border-[3px] border-slate-400" : "",
+            )}
+            onClick={() => setImage("/3386851.jpg")}
+          />
+          <Image
+            src={pic2}
+            height={350}
+            width={350}
+            alt="money"
+            className={cn(
+              "cursor-pointer rounded-md object-cover",
+              image === "/5172658.jpg" ? "border-[3px] border-slate-400" : "",
+            )}
+            onClick={() => setImage("/5172658.jpg")}
+          />
+          <Image
+            src={pic3}
+            height={350}
+            width={350}
+            alt="money"
+            className={cn(
+              "cursor-pointer rounded-md object-cover",
+              image === "/5172660.jpg" ? "border-[3px] border-slate-400" : "",
+            )}
+            onClick={() => setImage("/5172660.jpg")}
+          />
+        </div>
+
+        {/* <FormField
           labelName="Campaign image *"
           placeholder="Place image URL of your campaign"
           inputType="url"
+          isDisabled
           value={form.image}
           handleChange={(e) => handleFormFieldChange("image", e)}
-        />
+        /> */}
 
         <div className="mt-[40px] flex items-center justify-center">
           <CustomButton
             btnType="submit"
             title="Submit new campaign"
             styles="bg-[#1dc071]"
-            handleClick={()=>handleSubmit}
+            handleClick={() => handleSubmit}
           />
         </div>
       </form>

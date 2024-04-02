@@ -1,6 +1,6 @@
 import React from "react";
 
-import { tagType, thirdweb } from "~/public/assets";
+import { tagType, thirdweb,placeholder } from "~/public/assets";
 import { daysLeft, getDaysRemaining } from "@/utils";
 import Image from "next/image";
 
@@ -33,9 +33,9 @@ const FundCard = ({
       <Image
         src={image}
         alt="fund"
-        height={12}
-        width={12}
-        className="h-[158px] w-full rounded-[15px] object-cover"
+        height={820}
+        width={820}
+        className=" rounded-[15px] object-cover"
       />
 
       <div className="flex flex-col p-4">
@@ -83,11 +83,11 @@ const FundCard = ({
         <div className="mt-[20px] flex items-center gap-[12px]">
           <div className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-[#13131a]">
             <Image
-              src={thirdweb}
-              height={12}
-              width={12}
+              src={placeholder}
+              width={52}
+              height={52}
               alt="user"
-              className="h-1/2 w-1/2 object-contain"
+              className=""
             />
           </div>
           <p className="font-epilogue flex-1 truncate text-[12px] font-normal text-[#808191]">

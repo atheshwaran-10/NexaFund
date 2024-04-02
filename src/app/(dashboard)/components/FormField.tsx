@@ -5,6 +5,7 @@ interface FormFieldProps {
   placeholder: string;
   inputType: string;
   isTextArea?: boolean;
+  isDisabled?:boolean;
   value: string;
   handleChange: (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -17,6 +18,7 @@ const FormField: React.FC<FormFieldProps> = ({
   inputType,
   isTextArea = false,
   value,
+  isDisabled,
   handleChange,
 }) => {
   return (
@@ -39,6 +41,7 @@ const FormField: React.FC<FormFieldProps> = ({
         <input
           required
           value={value}
+          disabled={isDisabled ?? false}
           onChange={handleChange}
           type={inputType}
           step="0.1"

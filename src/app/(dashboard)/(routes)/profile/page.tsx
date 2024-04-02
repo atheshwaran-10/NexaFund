@@ -11,7 +11,7 @@ const Home = () => {
   const { address, contract,getUserCampaigns } = useStateContext();
 
   const fetchCampaigns = async () => {
-    console.log("fetchingg");
+   
     setIsLoading(true);
     const data = await getUserCampaigns();
     setCampaigns(data);
@@ -22,7 +22,6 @@ const Home = () => {
     if (contract) fetchCampaigns();
   }, [address, contract]);
 
-  console.log(campaigns)
 
   return (
     <DisplayCampaigns

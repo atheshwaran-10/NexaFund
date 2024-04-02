@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Donation, useStateContext, Campaign } from "@/context";
 import { CountBox, CustomButton, Loader } from "@/app/(dashboard)/components";
 import { calculateBarPercentage, daysLeft, getDaysRemaining } from "@/utils";
-import { thirdweb } from "~/public/assets";
+import { thirdweb,placeholder } from "~/public/assets";
 import Image from "next/image";
 import toast from "react-hot-toast";
 
@@ -16,23 +16,31 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
   campaign,
   donators,
 }) => {
-  const { donate, address } = useStateContext();
+  const { donate, address, getUserCampaigns } = useStateContext();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [amount, setAmount] = useState<string>("0");
   const [eligible, setEligible] = useState(true);
+  const [count, setCount] = useState(0);
+
+  const getCount = async () => {
+    const userCampaigns = await getUserCampaigns();
+    setCount(userCampaigns?.length || 0);
+  };
 
   useEffect(() => {
     if (donators) {
       donators?.map((donator) => {
         if (donator.donator === address) {
-          console.log("Already Donated");
           setEligible(false);
         }
       });
     }
-  }, [setEligible, donators]);
+    if (address) {
+      getCount();
+    }
+  }, [setEligible, donators,address]);
 
   const handleDonate = async () => {
     try {
@@ -63,15 +71,16 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
   return (
     <div>
       <div className="mt-10 flex w-full flex-col gap-[30px] md:flex-row">
-        <div className="flex-1 flex-col">
+        <div className="flex-1 flex-col items-center justify-center">
           <Image
             src={campaign.image}
             alt="campaign"
-            width={24}
-            height={24}
-            className="h-[410px] w-full rounded-xl object-cover"
+            height={400}
+            width={700}
+            className="m-auto flex rounded-xl object-cover  text-center"
           />
-          <div className="relative mt-2 h-[5px] w-full bg-[#3a3a43]">
+
+          <div className="relative mt-2 h-[5px] w-full bg-[#3a3a43] ">
             <div
               className="absolute h-full bg-[#4acd8d]"
               style={{
@@ -104,11 +113,11 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
             <div className="mt-[20px] flex flex-row flex-wrap items-center gap-[14px]">
               <div className="flex h-[52px] w-[52px] cursor-pointer items-center justify-center rounded-full bg-[#2c2f32]">
                 <Image
-                  src={thirdweb}
-                  width={24}
-                  height={24}
+                  src={placeholder}
+                  width={52}
+                  height={52}
                   alt="user"
-                  className="h-[60%] w-[60%] object-contain"
+                  className=""
                 />
               </div>
               <div>
@@ -116,7 +125,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                   {campaign.owner}
                 </h4>
                 <p className="font-epilogue mt-[4px] text-[12px] font-normal text-[#808191]">
-                  10 Campaigns
+                  {count} Campaigns
                 </p>
               </div>
             </div>
@@ -147,7 +156,7 @@ const CampaignDetails: React.FC<CampaignDetailsProps> = ({
                     className="flex items-center justify-between gap-4"
                   >
                     <p className="font-epilogue break-ll text-[16px] font-normal leading-[26px] text-[#b2b3bd]">
-                      {index + 1}. {item.donator}
+                      {index + 1}. {item.donator.substring(0, 25) + "..."}
                     </p>
                     <p className="font-epilogue break-ll text-[16px] font-normal leading-[26px] text-[#808191]">
                       {item.donation}

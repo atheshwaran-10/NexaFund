@@ -179,12 +179,11 @@ export const StateContextProvider = ({
   const getUserDonationsFromCampaigns = (
     campaigns: Campaign[],
     userAddress: string,
-  ): Campaign[]|null => {
+  ): Campaign[] | null => {
     //@ts-ignore
     return campaigns.map((campaign) => {
       const userDonations: string[] = [];
-      if (campaign.donators && campaign.donations)
-      {
+      if (campaign.donators && campaign.donations) {
         campaign.donators.forEach((donator, index) => {
           if (donator.toLowerCase() === userAddress.toLowerCase()) {
             //@ts-ignore
@@ -196,8 +195,7 @@ export const StateContextProvider = ({
           ...campaign,
           donations: userDonations,
         };
-      }
-      else{
+      } else {
         return null;
       }
     });
@@ -212,11 +210,9 @@ export const StateContextProvider = ({
           address,
         );
 
-        console.log(userDonations,1)
-        if(userDonations)
-          return userDonations;
-        else
-            return null;
+        console.log(userDonations, 1);
+        if (userDonations) return userDonations;
+        else return null;
       } else {
         return null;
       }
@@ -255,6 +251,3 @@ export const useStateContext = (): ContextType => {
   }
   return context;
 };
-
-
-
