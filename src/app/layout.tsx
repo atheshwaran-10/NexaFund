@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="font-serif">
+    <html lang="en">
       <body className={`font-sans ${inter.variable} font-serif`}>
         <TRPCReactProvider>
           <ThirdWebContext>{children}</ThirdWebContext>
