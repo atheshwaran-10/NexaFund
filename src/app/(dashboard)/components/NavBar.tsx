@@ -2,10 +2,11 @@
 import React, { useState } from "react";
 import { useStateContext } from "@/context";
 import CustomButton from "./CustomButton";
-import { logo, menu, search, thirdweb,placeholder } from "~/public/assets";
+import {menu, search, thirdweb,placeholder } from "~/public/assets";
 import { navlinks } from "@/constants";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import logo from "~/public/logo.png"
 import Image from "next/image";
 import useStore from "@/store/searchStore";
 
