@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { logo } from "~/public/assets";
+import logo from "~/public/logo.png";
 import { navlinks } from "@/constants";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -47,7 +47,7 @@ const Sidebar = () => {
       <Link href="/">
         <Image
           alt="logo"
-          className="h-[52px] w-[52px] rounded-md bg-[#2c2f32]"
+          className="h-[52px] w-[52px] rounded-md"
           src={logo}
           onClick={() => router.push("/")}
         />

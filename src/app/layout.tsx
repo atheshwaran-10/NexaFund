@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
-import {Poppins} from "next/font/google"
+import { Poppins } from "next/font/google";
 import ThirdWebContext from "@/context/ThirdWebContext";
 import { TRPCReactProvider } from "@/trpc/react";
 
@@ -9,8 +9,6 @@ const inter = Inter({
   variable: "--font-sans",
   display: "swap",
 });
-
-
 
 export const metadata = {
   title: " Nexa Fund",
@@ -30,10 +28,11 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>
-
+      <body className={`font-sans ${inter.variable} h-screen bg-[#13131a]`}>
         <TRPCReactProvider>
-          <ThirdWebContext>{children}</ThirdWebContext>
+          <ThirdWebContext>
+            <div className="bg-[#13131a]">{children}</div>
+          </ThirdWebContext>
         </TRPCReactProvider>
       </body>
     </html>

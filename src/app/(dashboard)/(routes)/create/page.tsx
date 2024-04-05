@@ -133,7 +133,7 @@ const CreateCampaign: React.FC = () => {
           />
         </div>
 
-        <div className="flex w-full flex-row justify-around gap-x-4">
+        <div className="flex w-full flex-col md:flex-row justify-around gap-4">
           <Image
             src={pic1}
             height={350}
